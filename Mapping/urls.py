@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 
 app_name = 'Mapping'
 
+print "hello"
 
 urlpatterns = [
     ######################  ACADEMIC YEAR & CLASS MAPPING URLS ##############################
