@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<div class="data_recover" style="background-color:#f4f6f6;margin-top:4px;">
+<div class="container"  style=" min-height: calc(72vh - 40px);" >
+ <div class="jumbotron"style="background-color:#f4f6f6;margin-top:4px;">
+ <div class="row">
+     <div class="col-md-2 col-xs-1"></div>
+     <div class="col-md-8 col-xs-10">
+      <div class="page-header" style="border-bottom: 0px solid #eee; margin: 40px 0 0px">
+      <div class="alert alert-warning" role="alert"  style="background-color:#fff; border-color: #cce5fa;">
+  <a href="#" class="alert-link" style="color:#008FC8;font-size: 15px;">User Registration Successfully !!</a>
+</div>
+      </div>
+      <div class="input-group">
+		<p style="font-size:16px;">
+		{% blocktrans with ago=timestamp|timesince %}
+		An Email has been set to your registered mail.<strong>{{ email }}</strong> 
+		Please verify your Email by using the link provided in the Email so that you can access the Schoolzen Portal.
+		{% endblocktrans %}</p>
+		<center ><B><a href="/school/login/" > <label style="color:#008FC8;text-decoration:underline;cursor:pointer;"> Click here login </label></a></B></center>
+		</div>
+		</div>		
+	</div></div><br><br><br><br><br>
+	</div>		
+    </div>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+      {%block ScriptBlock%}   
+  <Script>
+  window.onload = function() 
+  {
+      //YOUR JQUERY CODE
+    $(document).ready(function() 
+    {
+        console.log("hiiii")
+        $("#id_class_name")
+        .change(
+                function() 
+                {
+                    
+                    class_name = document
+                            .getElementById("id_class_name").value
+
+                            console.log(class_name)
+                            
+                    var url = '/school/viewSectionRelation/';
+                    viewSectionRelation(url,class_name)
+                });
+
+    
+    });
+
+  }
+
+  function viewSectionRelation(url,class_name) 
+    {
+      
+        $.ajax({
+            url : url,
+            type : "GET",
+            data : {    
+                class_name : class_name
+            },
+        })
+
+        .done(
+                function(data) 
+                {
+                    console.log(data);
+                    
+
+                         console.log(data[0].section) 
+                        /* $('#id_apartment_flat_no').empty(); */
+                        $('#id_section_name').empty();
+                        $('#id_section_name').append('<option value="">Please select</option>');
+                        $('#id_section_name').append('<option value="'+data[0].id+'">'+ data[0].section + '</option>')
+
+                        
+                        
+                });
+     }
+
+    
+  </Script>
+      
+{%endblock%}    
+        
+{% block content %}
+        
+         <div class="page-bar" style="margin-bottom: 1px;">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                <a href="{% url 'home' %}">Home</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                <i class="glyphicon glyphicon-align-justify"></i>
+                                <a href="{% url 'Registration:section_details' %}">Attendance Management</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                <span>Attendance Registration</span>
+                            </li>
+                        </ul>
+                        
+        </div>  
+        
+
+                            <!-- BEGIN VALIDATION STATES-->
+                            <div class="portlet light portlet-fit portlet-form ">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Add Attendance</span>
+                                    </div>
+                                    
+                                </div>
+                                <div class="portlet-body">
+                                
+                                
+                                    <!-- BEGIN FORM-->
+                                    <form action="{% url 'Registration:save_section' %}" id="form_sample_1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                    
+                                
+                    {% csrf_token %}
+                                   
+                                        <div class="form-body">
+                                            
+        
+                                            <div class="row">
+                                            
+                                                
+                                                <div class="">
+                                                    <label class="col-md-2 control-label">Class Name:
+                                                        
+                                                    </label>
+                                                    <div class="col-md-3">
+                                                    
+                                                    {{ attendancedetails1.class_name }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="">
+                                                    <label class="col-md-2 control-label">Section:
+                                                       
+                                                    </label>
+                                                    <div class="col-md-3">
+                                                    {{ attendancedetails1.section_name }}
+                                                    </div>
+                                                </div>
+                                                
+
+                                                <div class="">
+
+                                                 <button type="submit" class="btn green">Go</button>
+                                                 </div>
+                                                
+
+                                            </div>
+                                             
+                                        </div>
+                                            
+                                        
+                                    </form>
+                                    <!-- END FORM-->
+                                </div>
+                            </div>
+                            <!-- END VALIDATION STATES-->
+                        
+                       
+           {% endblock %}              
+                        
+                        <!-- BEGIN CORE PLUGINS -->
+       

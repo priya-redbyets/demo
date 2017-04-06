@@ -1,0 +1,177 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+       
+
+ {%block styleBlock%}
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+      
+        <link href="{% static 'assets/global/plugins/datatables/datatables.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css' %}" rel="stylesheet" type="text/css" />
+        
+       
+         </head>
+    <!-- END HEAD -->
+    
+   
+    
+    
+
+
+      <style type="text/css">  
+        .page-bar {
+    margin-bottom: 1px;
+}
+
+
+
+      </style> 
+        {%endblock%}
+
+
+
+<script>
+window.setTimeout(function() 
+{
+    $(".alert").fadeTo(500, 0).slideUp(500, function()
+    {
+        $(this).remove(); 
+    });
+}, 4000);
+
+</script>
+
+
+
+ {% block content %}
+ 
+ 
+<div class="page-bar">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                <a href="{% url 'Registration:home' %}">Home</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                <span>Manage Users</span>
+                            </li>
+                        </ul>
+</div>
+ 
+
+{% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" role="alert" style="color: black;" >{{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+    </div>
+{% endfor %}
+
+                            <!-- BEGIN VALIDATION STATES-->
+                    <div class="portlet light ">
+                           <!-- <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="icon-bubble font-green-sharp"></i>
+                                    <span class="caption-subject font-green-sharp sbold">Manage User</span>
+                                </div>
+                          
+                            </div>-->
+
+                       
+
+                        <div class="portlet-body">
+              
+
+                            <div class="tiles">
+                              
+                                
+                                <div class="tile bg-red-sunglo" style="height: 170px !important;width: 500px !important;">
+                                <a href="{% url 'Registration:add_staff' %}">
+                                     <div class="tile-body">
+                                        <i class="fa icon-user-follow"></i>
+                                        
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                  
+                                        <div class="name"> <h3>Add User<h3></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                    </a>
+                                </div>
+                                
+                              
+                                     
+                                <div class="tile bg-blue-steel" style="height: 170px !important;width: 500px !important;">
+                                 <a href="{% url 'Registration:view_staff' %}">
+                                   <div class="tile-body">
+                                        <i class="icon-magnifier"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                  
+                                        <div class="name"> <h3>View-Edit Users<h3></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                     </a>
+                                </div>
+                                
+                             
+                              
+                              
+                              
+                              
+                                      
+                                <div class="tile bg-purple-studio" style="height: 170px !important;width: 500px !important;">
+                                <a href="{% url 'Registration:role_details' %}">
+                                    <div class="tile-body">
+                                        <i class="icon-magnifier"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                  
+                                        <div class="name"> <h3>Manage Roles<h3></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                    </a>
+                                </div>
+                                
+                              
+                              
+                              
+                                      
+                                <div class="tile bg-green-turquoise" style="height: 170px !important;width: 500px !important;">
+                                <a href="{% url 'Mapping:roleUser' %}">
+                                    <div class="tile-body">
+                                                    <i class="icon-key"></i>
+                                                   <!-- <img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                                   <!-- <h4>Announcements</h4>
+                                                    <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                             </div>
+                                            <div class="tile-object">
+                                                <div class="name"> <h3>Role User Mapping<h3></div>
+                                                <!--<div class="number"> 24 Jan 2013 </div>-->
+                                            </div>
+                                            </a>
+                                </div>
+                                
+                              
+                              
+                              
+                             
+                               
+                          
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                            <!-- END VALIDATION STATES-->
+                     
+                      
+         {% endblock %}           
+                        

@@ -1,0 +1,362 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+       
+
+ {%block styleBlock%}
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+      
+        <link href="{% static 'assets/global/plugins/datatables/datatables.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css' %}" rel="stylesheet" type="text/css" />
+        
+       
+         </head>
+    <!-- END HEAD -->
+    
+     <style type="text/css">  
+        .page-bar {
+    margin-bottom: 1px;
+}
+
+
+
+      </style> 
+    
+   
+    {%endblock%}
+    
+{%block ScriptBlock%} 
+
+<script>
+window.onload = function() { 
+
+	
+	
+	roleId = $('#roleid').val();
+	console.log("roleId",roleId)
+	
+	if(roleId == 2) {
+	console.log("in if condtnt")
+	$('.bg-yellow-gold').css("display","none");
+
+	$('.bg-green-turquoise').css("display","none");
+	$('.bg-purple-intense').css("display","none");
+	$('.bg-green-sharp').css("display","none");
+	
+	$('.bg-red-sunglo').css("display","none");
+	$('.bg-yellow-mint').css("display","none");
+	$('.bg-blue-madison').css("display","none");
+	
+	$('.bg-blue-steel').css("display","none");
+	
+	$('.bg-green-sharp').css("display","none");
+	
+	
+	$('.bg-yellow-lemon').css("display","none");
+	
+	$('.bg-grey-silver').css("display","none");
+	
+	
+	
+	$('#idCards').css("display","none");
+	
+	$('#manageUsers').css("display","none");
+}
+
+	if(roleId == 4) {
+	console.log("in if condtnt")
+	$('.bg-yellow-gold').css("display","none");
+
+	$('.bg-green-turquoise').css("display","none");
+	
+	$('.bg-green-sharp').css("display","none");
+	
+	$('.bg-red-sunglo').css("display","none");
+	$('.bg-yellow-mint').css("display","none");
+	$('.bg-blue-madison').css("display","none");
+	
+	$('.bg-blue-steel').css("display","none");
+	
+	$('.bg-green-sharp').css("display","none");
+	
+	$('.bg-purple-intense').css("display","none");
+	
+	$('.bg-yellow-lemon').css("display","none");
+	
+	$('.bg-grey-silver').css("display","none");
+	
+	
+	
+	$('#idCards').css("display","none");
+	
+	$('#manageUsers').css("display","none");
+}
+	
+	
+    $(".alert").fadeTo(500, 0).slideUp(500, function()
+    {
+        $(this).remove(); 
+    });
+}
+
+</script>
+
+{%endblock%}
+
+ {% block content %}
+<div class="page-bar">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                <!--<a href="{% url 'home' %}">Home</a>-->
+                                 <a href="{% url 'Registration:home' %}">Home</a> 
+  				<input id="roleid"  type="hidden" value="{{ roleId }}">
+
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                <span>Academic & School</span>
+                            </li>
+                        </ul>
+</div>
+ 
+
+{% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" role="alert" style="color: black;" >{{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+    </div>
+{% endfor %}
+
+                            <!-- BEGIN VALIDATION STATES-->
+                    <div class="portlet light ">
+                           <!-- <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="icon-bubble font-green-sharp"></i>
+                                    <span class="caption-subject font-green-sharp sbold">Academic & School</span>
+                                </div>
+                          
+                            </div>-->
+
+                       
+                        <div class="portlet-body">
+
+                            <div class="tiles">
+
+                              
+                                <div class="tile double-down bg-yellow-gold">
+                                <a href="{% url 'Registration:academic_details' %}">
+                                    <div class="tile-body">
+                                       <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <div class="tile-object">
+                                       <div class="name"> <h4 align="center">Academic Year-Info<h4></div>
+                                    </div>
+                                 </a>
+                                </div>
+
+                       
+
+
+                              
+                                
+                                    <div class="tile double bg-green-turquoise">
+                                    <a href="{% url 'Registration:school_details' %}">
+                                    <div class="tile-body">
+                                        <i class="fa fa-university"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"><h4>School-Info</h4></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                    </a>
+                                </div>
+                                
+                              
+
+                            
+                             
+                                
+                                    
+                                    <div class="tile double-down bg-purple-studio" style="height: 135px !important;width: 280px !important;">
+                                     <a href="{% url 'Registration:class_details' %}">
+                                    <div class="tile-body">
+                                        <i class="fa fa-calendar-o"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h4>Class-Info<h4></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                     </a>
+                                </div>
+                                
+                             
+
+
+                              
+                                
+                                    
+                                    <div class="tile double-down bg-purple-intense" style="height: 135px !important;width: 280px !important;">
+                                     <a href="{% url 'Registration:section_details' %}">
+                                    <div class="tile-body">
+                                         <i class="glyphicon glyphicon-align-justify"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h4>Section-Info<h4></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                    </a>
+                                </div>
+                                
+                              
+
+                               
+                                
+                                    
+                                    <div class="tile double-down bg-green-sharp" style="height: 135px !important;width: 280px !important;">
+                                    <a href="{% url 'Registration:view_subject' %}">
+                                    <div class="tile-body">
+                                        <i class="fa fa-book"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h4>Subject-Info<h4></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                    </a>
+                                </div>
+                                
+                              
+                              
+
+                               <div class="tile bg-red-sunglo" style="height: 135px !important;width: 280px !important;">
+                                <a href="{% url 'Mapping:classAcedemicyear' %}">
+
+                                    <div class="tile-body">
+                                        <i class="fa fa-calendar"></i>
+                                        
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"><h5 style="font-size: 16px;">Academic-Class-Section Mapping</h5> </div>
+                                        
+                                    </div>
+                                    </a>
+                                </div>
+
+                                
+
+                            
+
+
+                              
+
+                                
+
+                               <div class="tile bg-blue-madison" style="height: 135px !important;width: 280px !important;">
+                               <a href="{% url 'Mapping:subjectClass' %}">
+                                    <div class="tile-body">
+                                        <i class="fa fa-book"></i>
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h5 style="font-size: 16px;">Class-Mandatory-Subject Mapping</h5></div>
+                                        
+                                    </div>
+                                    </a>
+                                </div>
+
+
+
+
+
+                                   <div class="tile double-down tile bg-yellow-mint" style="height: 135px !important;width: 280px !important;">
+                                     <a href="{% url 'Mapping:studentSubject' %}">
+                                    <div class="tile-body">
+                                        <i class="fa fa-book"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h5 style="font-size: 16px;">Student-Optional-Subject Mapping<h5></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                    </a>
+                                </div>
+
+
+
+
+                               <div class="tile bg-grey-silver">
+
+                               <a href="{% url 'Mapping:supervisorClass' %}">
+                                    <div class="tile-body">
+                                        <i class="fa fa-book"></i>
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> Supervisor-Class Mapping</div>
+                                        
+                                    </div>
+                                    </a>
+                                </div>
+
+
+
+                                <div class="tile double-down bg-green-sharp" style="height: 135px !important;width: 280px !important;">
+                                    <a href="{% url 'Mapping:teacherSubject' %}">
+                                    <div class="tile-body">
+                                        <i class="fa fa-book"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h4>Teacher-Subject Mapping<h4></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                    </a>
+                                </div>
+
+
+
+                                    <div class="tile double-down bg-yellow-lemon" style="height: 135px !important;width: 280px !important;">
+                                    <a href="{% url 'Mapping:teacherClass' %}">
+                                    <div class="tile-body">
+                                        <i class="fa fa-book"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h4>Class-Teacher Mapping<h4></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                    </a>
+                                </div>
+
+
+
+
+
+                               
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                            <!-- END VALIDATION STATES-->
+                     
+                      
+         {% endblock %}           
+                        

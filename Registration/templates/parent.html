@@ -1,0 +1,381 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+       
+  
+         {%block styleBlock%}
+      <style type="text/css">  
+        .row {
+    margin-left: 80px;
+    margin-right: 20px;
+    margin-top: 0px;
+}
+input[type=file]{ 
+        color:transparent;
+    }
+    
+    
+    .portlet.box.blue>.portlet-title, .portlet>.portlet-body.blue {
+    background-color: #eef1f5;
+}
+
+.portlet.box.blue {
+    border: 1px solid #eef1f5;
+    border-top: 0;
+}
+
+.portlet>.portlet-title>.nav-tabs {
+    background: 0 0;
+    margin: 1px 0 0;
+    float: left;
+    display: inline-block;
+    border: 0;
+}
+
+
+.portlet>.portlet-title>.nav-tabs>li>a {
+    background: 0 0;
+    margin: 5px 0 0 1px;
+    border: 0;
+    padding: 8px 10px;
+    color: #17C4BB;
+}
+#id_gender{
+    list-style: none;
+}
+      </style> 
+        {%endblock%}
+        
+         {%block ScriptBlock%}
+<script>
+window.onload = function() {
+	  //YOUR JQUERY CODE
+	$(document).ready(function() {
+		$('#action_type').val('add');
+
+		$("#add").click(function() {
+			
+			return addForm(this,'sec_parent');
+		});
+
+		$(".delete").click(function() {
+			
+			return deleteForm(this,'sec_parent');
+		});
+
+	});
+	function addForm(btn, prefix) {
+		console.log(prefix)
+		var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		var row = $(".item:first").clone(true).get(0);
+		/*  $(row).removeAttr('id').insertAfter($('.item')).children('.hidden').removeClass('hidden'); */
+		$(row).removeAttr('id').hide().insertAfter(".item:last").slideDown(300);
+
+		$(row).children().not(':last').find(
+				'input,select,textarea,Date,checkbox').each(function() {
+					updateElementIndex(this, prefix, formCount);
+			if ($(this).attr('type') == 'text')
+				$(this).val('');
+		});
+		$(row).find('.delete').click(function() {
+			deleteForm(this, prefix);
+		});
+		$('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
+		return false;
+	}
+
+	
+
+	
+	function updateElementIndex(el, prefix, ndx) {
+		console.log(prefix);
+		var id_regex = new RegExp('(' + prefix + '-\\d+)');
+		var replacement = prefix + '-' + ndx;
+		if ($(el).attr("for"))
+			$(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+		if (el.id)
+			el.id = el.id.replace(id_regex, replacement);
+		if (el.name)
+			el.name = el.name.replace(id_regex, replacement);
+	}
+
+	
+	
+	
+	function deleteForm(btn, prefix) {
+		var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+		if (formCount > 1) {
+			// Delete the item/form
+			$(btn).parents('.item').remove();
+
+			var forms = $('.item'); // Get all the forms
+
+			// Update the total number of forms (1 less than before)
+			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+
+			var i = 0;
+			// Go through the forms and set their indices, names and IDs
+			for (formCount = forms.length; i < formCount; i++) {
+				$(forms.get(i)).find('input,select,textarea,Date,checkbox')
+						.each(function() {
+							updateElementIndex(this, prefix, i);
+						});
+			}
+		} // End if
+		else {
+			alert("Can't Delete!!!Atleast One Shift will be there!");
+		}
+		return false;
+	}
+	
+	
+	  
+	}
+
+
+</script>
+        
+ {%endblock%}       
+        
+        
+        {% block content %}
+ 
+
+
+
+ <div class="page-bar" style="margin-bottom: 1px;">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                <a href="{% url 'Registration:home' %}">Home</a> 
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                
+                                <a href="{% url 'Registration:profile_view' %}">  Parents & Students</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                              <li>
+                                    
+                                 <a href="{% url 'Registration:parentList' %}">View Parent</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                <span>Add Parent</span>
+                            </li>
+                        </ul>
+                        
+                    </div> 
+
+
+
+
+
+
+
+
+                            <!-- BEGIN VALIDATION STATES-->
+                            <div class="portlet light portlet-fit portlet-form ">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Parent Details</span>
+                                    </div>
+                                   
+                                </div>
+                                <div class="portlet-body">
+                                
+                                
+                                    <!-- BEGIN FORM-->
+                                    <form action="{% url 'Registration:saveParent' %}" id="form_sample_1" class="form-horizontal" method="POST">
+                                    {% csrf_token %}
+                                
+					
+                                   
+                                        <div class="form-body">
+                                            
+                                             
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label"> Name:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.name }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Contact No:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.contact_num  }}  </div>
+                                            </div></div>
+                                            <br>
+                                            
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label"> Middle Name:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.middle_name }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Last Name:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.last_name  }}  </div>
+                                            </div></div>
+                                            <br>
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Birth Date:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.birth_date }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label"> Email:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                {{ ParentsDetailsForm.emai_id }}
+                                                     </div>
+                                            </div>
+                                            
+                                            </div>
+                                            <br>
+                                            
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Gender:
+                                                   
+                                                </label>
+                                                 <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.gender  }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label"> Address:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                {{ ParentsDetailsForm.address }}
+                                                     </div>
+                                            </div>
+                                            
+                                            </div>
+                                            
+                                           
+                                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    
+                                    <ul class="nav nav-tabs">
+                                    <li class="">
+                                            <a href="#portlet_tab2" data-toggle="tab" aria-expanded="false"> Other Details </a>
+                                        </li>
+                                        <li class="">
+                                            <a href="#portlet_tab3" data-toggle="tab" aria-expanded="false"> Child Details </a>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="tab-content">
+                                         <div class="tab-pane" id="portlet_tab2">
+                                             
+                                           {{ SecondaryParentDetailsFormSets.management_form }} 
+											{% for form in SecondaryParentDetailsFormSets.forms %}
+										
+										
+										<div class="item" id="item">
+												<div class="row" style="margin-left: 0px;">
+													
+													
+													
+													<div class="col-6 col-sm-2 form-group">
+													<label id="desc">Name</label><br>
+													 {{ form.sec_parent_name }}
+												</div>
+													
+													
+													<div class="col-6 col-sm-3 form-group">
+													<label id="desc">Email</label><br>
+													 {{ form.sec_parent_mail }}
+												</div>
+												
+												
+													<div class="col-6 col-sm-2 form-group">
+													<label id="desc">Contact</label><br>
+													 {{ form.sec_parent_contact }}
+												</div>
+												
+												
+													<div class="col-6 col-sm-3 form-group">
+													<label id="desc">Address</label><br>
+													 {{ form.sec_parent_address }}
+												</div>
+												
+												<div class="col-6 col-sm-3 form-group">
+													<label id="desc">Type</label><br>
+													 {{ form.type }}
+												</div>
+												
+												</div>
+
+												<div style="margin-top:-73px;">
+												
+													<input class="delete btn btn-default" id="deletebtn"
+														type="button" value="DELETE" style="margin-left: 9px;">
+														<br>
+														 <input
+														type="button" id="add" value="ADD"
+														class="btn btn-primary"  style="margin-left: 9px;width: 75px;">
+														</div>
+												
+											</div>
+										
+										{% endfor %}
+                                            
+                                            
+                                            
+                                            
+                                            
+                                              
+                                           
+                                            
+                                            
+                                    </div>
+                                        <div class="tab-pane" id="portlet_tab3">
+                                             
+                                          <p> Please Add Parent First</p>
+                                    </div>
+                                </div>
+                            </div>
+                                           
+                                      </div>      
+                                           
+                                            
+                                            
+                                           
+                                            <br>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green">Save</button>
+                                                    <button type="button" class="btn grey-salsa btn-outline">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- END FORM-->
+                                </div>
+                            </div>
+                            <!-- END VALIDATION STATES-->
+                      
+                       
+           {% endblock %}              
+                        
+                        <!-- BEGIN CORE PLUGINS -->
+       

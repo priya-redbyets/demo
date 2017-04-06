@@ -1,0 +1,275 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+       
+
+ {%block styleBlock%}
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+      
+        <link href="{% static 'assets/global/plugins/datatables/datatables.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css' %}" rel="stylesheet" type="text/css" />
+        
+       
+         </head>
+    <!-- END HEAD -->
+    
+     <style type="text/css">  
+        .page-bar {
+    margin-bottom: 1px;
+}
+
+
+
+      </style> 
+    
+   
+    {%endblock%}
+    
+{%block ScriptBlock%} 
+
+<script>
+window.onload = function() { 
+
+	
+	
+	roleId = $('#roleid').val();
+	console.log("roleId",roleId)
+	
+	if(roleId == 2) {
+	console.log("in if condtnt")
+	
+	$('.bg-yellow-gold').css("display","none");
+	$('.bg-yellow-lemon').css("display","none");
+	
+	$('.bg-green-turquoise').css("display","none");
+	$('.bg-purple-studio').css("display","none");
+	
+	$('.bg-purple-studio').css("display","none");
+	$('.bg-blue-madison').css("display","none");
+	
+	$('#idCards').css("display","none");
+	
+	$('#manageUsers').css("display","none");
+}
+	else if(roleId == 3)
+	{
+		console.log("in if condtnt")
+		
+		$('.bg-yellow-gold').css("display","none");
+		$('.bg-yellow-lemon').css("display","none");
+		
+		$('.bg-green-turquoise').css("display","none");
+		$('.bg-purple-studio').css("display","none");
+		
+		$('.bg-purple-studio').css("display","none");
+		$('.bg-blue-madison').css("display","none");
+		
+		$('#idCards').css("display","none");
+		$('#manageUsers').css("display","none");
+		$('#academicSchool').css("display","none");
+		
+	}
+	else if(roleId == 4) {
+		console.log("in if condtnt")
+		
+		$('.bg-yellow-gold').css("display","none");
+		$('.bg-yellow-lemon').css("display","none");
+		
+		$('.bg-green-turquoise').css("display","none");
+		$('.bg-purple-studio').css("display","none");
+		
+		$('.bg-purple-studio').css("display","none");
+		$('.bg-blue-madison').css("display","none");
+		
+		$('#idCards').css("display","none");
+		
+		$('#manageUsers').css("display","none");
+	}
+	else if(roleId == 5)
+	{
+		console.log("in if condtnt")
+		
+		$('.bg-yellow-gold').css("display","none");
+		$('.bg-yellow-lemon').css("display","none");
+		
+		$('.bg-green-turquoise').css("display","none");
+		
+		$('#atendance').css("display","none");
+		$('.bg-blue-madison').css("display","none");
+		
+		$('#idCards').css("display","none");
+		$('#manageUsers').css("display","none");
+		$('#academicSchool').css("display","none");
+		
+	}
+	
+	
+    $(".alert").fadeTo(500, 0).slideUp(500, function()
+    {
+        $(this).remove(); 
+    });
+}
+</script>
+
+{%endblock%}
+
+ {% block content %}
+<div class="page-bar">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                 <a href="{% url 'Registration:home' %}">Home</a>   
+                                 <input id="roleid"  type="hidden" value="{{ roleId }}">
+                              
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                <span>Parents & Students</span>
+                            </li>
+                        </ul>
+</div>
+ 
+
+{% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" role="alert" style="color: black;" >{{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+    </div>
+{% endfor %}
+
+                            <!-- BEGIN VALIDATION STATES-->
+                    <div class="portlet light ">
+                        <!--  
+                           <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="icon-bubble font-green-sharp"></i>
+                                    <span class="caption-subject font-green-sharp sbold">Parents & Students</span>
+                                </div>
+                          
+                            </div>-->
+
+                       
+
+                        <div class="portlet-body">
+
+
+                            <div class="tiles">
+                            
+                            
+                              
+                                      
+                                <div class="tile double-down bg-yellow-gold" style="height: 310px !important;width: 170px !important;">
+                                <a href="{% url 'Registration:add_student' %}">
+                                     <div class="tile-body">
+                                        <i class="fa fa-users"></i>
+
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h4>Add Student<h4></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                     </a>
+                                </div>
+
+                             
+                              
+                                
+                                <div class="tile bg-red-sunglo" style="height: 150px !important;width: 410px !important;">
+                                <a href="{% url 'Registration:student_details' %}">
+                                    <div class="tile-body">
+                                        <i class="fa icon-magnifier-add"></i>
+
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h4>View/Edit Student<h4></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                    </a>
+                                </div>
+                                
+                              
+                              
+                               
+                                <div class="tile bg-yellow-lemon" style="height: 150px !important;width: 410px !important;">
+                                <a href="{% url 'Registration:viewParent' %}">
+                                    <div class="tile-body">
+                                            <i class="glyphicon glyphicon-user"></i>
+    
+                                            <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                           <!-- <h4>Announcements</h4>
+                                            <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                        </div>
+                                        <div class="tile-object">
+                                            <div class="name"> <h4>Add Parent<h4></div>
+                                            <!--<div class="number"> 24 Jan 2013 </div>-->
+                                        </div>
+                                         </a>
+                                </div>
+                                
+                             
+                              
+                                
+                                <div class="tile bg-green-turquoise" style="height: 150px !important;width: 270px !important;">
+                                <a href="{% url 'Registration:parentList' %}">
+                                     <div class="tile-body">
+                                        <i class="fa icon-magnifier-add"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h4>View/Edit Parent<h4></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                     </a>
+                                </div>
+                                
+                             
+                              
+                               
+                                <div class="tile bg-purple-studio" style="height: 150px !important;width: 270px !important;">
+
+                                 <a href="{% url 'Registration:view_class_section' %}">
+                                    <div class="tile-body">
+                                       
+                                        <i class="fa fa-medkit"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h4>Medical-Info<h4></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                     </a>
+                                </div>
+
+                                   <div class="tile bg-blue-madison" style="height: 150px !important;width: 270px !important;">
+                                 <a href="javascript:;" class="nav-link nav-toggle">
+                                    <div class="tile-body">
+                                        <i class="fa icon-magnifier-add"></i>
+                                        <!--<img src="../assets/pages/media/profile/photo1.jpg" alt="">-->
+                                       <!-- <h4>Announcements</h4>
+                                        <p> Easily style icon color, size, shadow, and anything that's possible with CSS. </p>-->
+                                    </div>
+                                    <div class="tile-object">
+                                        <div class="name"> <h4>Transfer Certificate<h4></div>
+                                        <!--<div class="number"> 24 Jan 2013 </div>-->
+                                    </div>
+                                     </a>
+                                </div>
+
+                              
+                          
+                            </div>
+                        </div>
+                    </div>
+                            <!-- END VALIDATION STATES-->
+                     
+                      
+         {% endblock %}           
+                        

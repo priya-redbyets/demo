@@ -1,0 +1,568 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+{%block styleBlock%}
+<style type="text/css">  
+   .row {
+   margin-left: 80px;
+   margin-right: 20px;
+   margin-top: 30px;
+   }
+   input[type=file]{ 
+   color:transparent;
+   }
+   li
+{ 
+display:inline; 
+
+} 
+   #PreviewPicture
+   {
+   width: 150px;
+   height: 150px;
+   background-repeat: no-repeat;
+   border:0;
+   display:inline-block;
+   }
+   .col-md-offset-3 {
+   margin-left: 1%;
+   }
+   #gender
+   {
+   margin-top: -80px;
+   margin-left: 200px
+   }
+   .portlet.box.blue>.portlet-title, .portlet>.portlet-body.blue {
+   background-color: #eef1f5;
+   }
+   .portlet.box.blue {
+   border: 1px solid #eef1f5;
+   border-top: 0;
+   }
+   .portlet>.portlet-title>.nav-tabs {
+   background: 0 0;
+   margin: 1px 0 0;
+   float: left;
+   display: inline-block;
+   border: 0;
+   }
+   .portlet>.portlet-title>.nav-tabs>li>a {
+   background: 0 0;
+   margin: 5px 0 0 1px;
+   border: 0;
+   padding: 8px 10px;
+   color: #17C4BB;
+   }
+   .portlet.box>.portlet-body {
+   background-color: #fff;
+   padding: 15px;
+   margin-left: 1%;
+   width: 98%;
+   }
+   .portlet.blue, .portlet.box.blue>.portlet-title, .portlet>.portlet-body.blue {
+   background-color: eef1f5;
+   }
+   #id_gender{
+    list-style: none;
+}
+</style>
+{%endblock%}
+{%block ScriptBlock%}
+<script>
+   window.onload = function() {
+   	  //YOUR JQUERY CODE
+   	$(document).ready(function() {
+   		console.log("hiiii")
+   	
+   		 $("#edit").click(function(event){
+        $("#update").show();
+        $("#edit").hide();
+        id_class_name
+       
+        $('#id_photo').prop("disabled", false);
+        $('#id_gender_1').prop("disabled", false);
+        $('#id_gender_0').prop("disabled", false);
+        $('.form-control').prop("disabled", false);
+       
+    });
+   					class_name = document
+   							.getElementById("id_class_name").value
+   						console.log(class_name)	
+   					var url = '/school/viewSubject/';
+   					
+   				
+   		$.ajax({
+   			url : url,
+   			type : "GET",
+   			data : {
+   				class_name : class_name
+   			},
+   		})
+   
+   		.done(
+   				function(data) {
+   					console.log(data);
+   					
+   					for (var i = 0; i < data.length; i++) {
+   						
+   						//form-0-amenities_quantity
+   						
+   						
+   						
+   						
+   						$(".sub").append('<tr><td>' + "<input type='checkbox' name = 'check' value =" +data[i].id +  ">"+ '</td><td>' +  data[i].subject + '</td><td>' +  data[i].code + '</td></tr>');
+   					}
+   						 
+   						
+   
+   				});
+   
+   		
+   		
+   		   var image = $("#id_photo").attr('value');
+   		   console.log(image)
+   		 var Val=("../media/".concat(image))
+   		
+   		 console.log(Val)
+   		
+   		$("#PreviewPicture").css("background-image", "url("+Val+")")
+   		
+   		$("#id_class_name").click(function() {    
+   			$('select:first-child').css({display:none})
+   			
+   		 });
+   			  $("#id_photo").on("change", function(){
+   			   var files = !!this.files ? this.files : [];
+   			   if (!files.length || !window.FileReader) return; // Check if File is selected, or no FileReader support
+   			   if (/^image/.test( files[0].type)){ //  Allow only image upload
+   			    var ReaderObj = new FileReader(); // Create instance of the FileReader
+   			    ReaderObj.readAsDataURL(files[0]); // read the file uploaded
+   			    ReaderObj.onloadend = function(){ // set uploaded image data as background of div
+   			    $("#PreviewPicture").css("background-image", "url("+this.result+")");
+   			   }
+   			  }else{
+   			    alert("Upload an image");
+   			  }
+   			 });
+   			});
+   
+   
+   	  
+   	}
+   
+   function viewSubject(url , class_name) {
+       
+   	
+   }
+</script>
+{%endblock%}       
+{% block content %}
+
+
+
+
+<form action="{% url 'Registration:save_edited_student' %}" id="form_sample_1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+   {% csrf_token %}
+   <div class="col-md-12">
+
+    <div class="page-bar" style="margin-bottom: 1px;">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                 <a href="{% url 'Registration:home' %}">Home</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                               
+                                <a href="{% url 'Registration:profile_view' %}"> Parents & Students</a>
+                                <i class="fa fa-angle-right"></i>
+                                
+                            </li>
+                               <li>
+                              
+                                <a href="{% url 'Registration:student_details' %}"> Student View</a>
+                                <i class="fa fa-angle-right"></i>
+                                
+                            </li>
+                            <li>
+                                <span> Edit-Delete Student</span>
+                            </li>
+                        </ul>
+                        
+                    </div>
+
+
+
+
+      <!-- BEGIN VALIDATION STATES-->
+      <div class="portlet light portlet-fit portlet-form ">
+         <div class="portlet-title">
+            <div class="caption">
+               <i class="icon-settings font-red"></i>
+               <span class="caption-subject font-red sbold uppercase">Student Details</span>
+            </div>
+            
+            
+         </div>
+         <div class="portlet-body">
+         <div class="col-md-offset-3 col-md-9">
+                <button type="button" class="btn green" id="edit">Edit</button>
+               <button type="submit" id ="update" class="btn green" style="display:none;">Update</button>
+               <button type="button" class="btn red"  data-toggle="modal" data-target="#myModal1">Delete</button>
+            </div><br><br>
+            <!-- BEGIN FORM-->
+            <div class="form-body">
+               <div  height="142" width="142" id="PreviewPicture"></div>
+               <input id="id_photo" name="photo" type="file"  value="{{ StudentDetailsForm.photo }}" disabled>
+               <input type="hidden" value= "{{ StudentDetailsForm.id }}" name ="student_id1"/>
+               <div class="row">
+                  <div class="">
+                     <label class="col-md-2 control-label">First Name:
+                     </label>
+                     <div class="col-md-4">
+                        <input autocomplete="off" value ="{{ StudentDetailsForm.first_name }}" class="form-control" id="id_first_name" name="first_name" type="text" required="" disabled> 
+                     </div>
+                  </div>
+                 <div class="">
+                     <label class="col-md-2 control-label">Last Name:
+                     </label>
+                     <div class="col-md-4">
+                        <input autocomplete="off" value="{{ StudentDetailsForm.last_name }}"  class="form-control" id="id_last_name" name="last_name" type="text" required="" disabled> 
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  
+                  <div class="">
+                     <label class="col-md-2 control-label">Father Name:
+                     </label>
+                     <div class="col-md-4">
+                        <input autocomplete="off" value="{{ StudentDetailsForm.father_name  }}"  class="form-control" id="id_father_name" name="father_name" type="text" required="" disabled>  
+                     </div>
+                  </div>
+                  
+                  <div class="">
+                     <label class="col-md-2 control-label">Mother Name:
+                     </label>
+                     <div class="col-md-4">
+                        <input autocomplete="off" value="{{ StudentDetailsForm.mother_name }}"  class="form-control" id="id_mother_name" name="mother_name" type="text" required="" disabled>  
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  
+                  <div class="">
+                     <label class="col-md-2 control-label">Email :
+                     </label>
+                     <div class="col-md-4">
+                        <input autocomplete="off"  value=" {{ StudentDetailsForm.email }}"  class="form-control" id="id_email" name="email" type="text" required="" disabled>  
+                     </div>
+                  </div>
+                  
+                   <div class="">
+                     <label class="col-md-2 control-label">Gender:
+                     </label>
+                     <div class="col-md-4" style="margin-left:-39px;margin-top: 3px;">
+                        <ul id="id_gender">
+                           <li><label for="id_gender_0"><input id="id_gender_0" name="gender" type="radio" value="False" {{ male }} required disabled> Male</label>
+                           </li>
+                           <li><label for="id_gender_1"><input id="id_gender_1" name="gender" type="radio" value="True" {{ female }} required disabled> Female</label>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                 
+                  <div class="">
+                     <label class="col-md-2 control-label">Birth Date:
+                     </label>
+                     <div class="col-md-4">
+                        <input autocomplete="off" value="{{ StudentDetailsForm.birth_date }}"  class="form-control" id="id_birth_date" name="birth_date" type="date" required="" disabled>  
+                     </div>
+                  </div>
+                  <div class="">
+                     <label class="col-md-2 control-label">Enrollment Number:
+                     </label>
+                     <div class="col-md-4">
+                        <input autocomplete="off" value="{{ StudentDetailsForm.student_enrollment_num }}"  class="form-control" id="id_student_enrollment_num" name="student_enrollment_num" type="text" required="" disabled> 
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  
+                  <div class="">
+                     <label class="col-md-2 control-label">Class Name:
+                     </label>
+                     <div class="col-md-4">
+                        <select autocomplete="off" class="form-control" id="id_class_name" name="class_name" required="" disabled>
+                           <option style="display:none" selected="selected" value="{{ StudentDetailsForm.class_name.id }}">{{ StudentDetailsForm.class_name}}</option>
+                           {% for ClassDetail in ClassDetail %}
+                           <option value="{{ ClassDetail.class_field.id }}" {{ value1 }} >{{ ClassDetail.class_name }}</option>
+                           {% endfor %}
+                        </select>
+                     </div>
+                  </div>
+                  <div class="" >
+                                            
+                                            <label class="col-md-2 control-label">Parent Name:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                <select autocomplete="off" class="form-control" id="id_class_name" name="class_name" required="" disabled>
+                           <option style="display:none" selected="selected" value="{{ StudentDetailsForm.parent_name.id }}"> {{ StudentDetailsForm.parent_name }}</option>
+                           {% for ParentsDetails in ParentsDetails %}
+                           <option value="{{ ParentsDetails.id }}" {{ value1 }} >{{ ParentsDetails.name }}</option>
+                           {% endfor %}
+                        </select>
+                                                
+                                                    </div>
+                                                
+                                            </div>
+               </div>
+               
+                                            <div class="row">
+                                            
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Parent Email:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                 <input autocomplete="off" class="form-control" value="{{ StudentDetailsForm.parent_mail  }}" id="id_school_name" name="school_name" type="text" required="" disabled> 
+                                             
+                                                      </div>
+                                            </div>
+                                             <div class="">
+                     <label class="col-md-2 control-label">Residential Address:
+                     </label>
+                     <div class="col-md-4">
+                        <textarea autocomplete="off" class="form-control" cols="40" id="id_adress" name="adress" rows="2" required="" disabled> {{ StudentDetailsForm.adress  }} </textarea>  
+                     </div>
+                  </div>
+                                            </div>
+               <div class="row">
+                  <div class="" style="display: none;">
+                     <label class="col-md-2 control-label">School Name:
+                     </label>
+                     <div class="col-md-4">
+                        <input autocomplete="off" class="form-control" value="{{ StudentDetailsForm.school_name }}"id="id_school_name" name="school_name" type="text" required="" disabled>
+                     </div>
+                  </div>
+                 
+               </div>
+               <br>
+               <!-- END FORM-->
+
+</div>
+</div>
+</div>
+<!-- END VALIDATION STATES-->
+</div>
+</form>
+<div class="portlet box blue">
+   <div class="portlet-title">
+      <ul class="nav nav-tabs" style="margin-top: -30px;">
+    <li class="">
+            <a href="#portlet_tab1" data-toggle="tab" aria-expanded="true"> Subject Details </a>
+         </li>
+         <li class="active">
+            <a href="#portlet_tab3" data-toggle="tab" aria-expanded="true"> Academic Details </a>
+         </li>
+         <li class="">
+            <a href="#portlet_tab2" data-toggle="tab" aria-expanded="false"> Medical Information </a>
+         </li>
+         
+      </ul>
+   </div>
+   <div class="portlet-body">
+      <div class="tab-content">
+          <div class="tab-pane" id="portlet_tab1">
+            <div class="form-body">   
+                                          <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1" >
+                                        <thead>
+                                            <tr >
+                                            <th style="display:none;">Serial No </th>
+                                            <th > Code </th>
+                                             <th > Subject </th>
+                                            <th > Type </th>
+                                           
+                                           </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                       {% for obj in modelDict %}
+                    
+            <tr style="cursor: pointer;">
+            
+            <td style="display:none;">{{ forloop.counter }}</td>
+            <td>{{ obj.code }}</td>
+            <td>{{ obj.subject }}</td>  
+          <td>{{ obj.type }}</td>
+         
+         </tr>
+            {% endfor %}
+                                            
+                                       
+                                            </tbody>
+                                    </table>
+                                          
+                                             </div>
+         </div>
+         <div class="tab-pane" id="portlet_tab2">
+            <div class="form-body">   
+                                             <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Blood Group:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input autocomplete="off" class="form-control" value = "{{ StudentDetailsForm.blood_group }}" id="id_blood_group" name="blood_group" type="text" required="" disabled> </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Height(cm.):
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input autocomplete="off" class="form-control" id="id_height" value = "{{ StudentDetailsForm.height }}" name="height" type="text" required="" disabled>  </div>
+                                            </div></div>
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Weight(kg.):
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input autocomplete="off" class="form-control" id="id_weight" value = " {{ StudentDetailsForm.weight }}" name="weight" type="text" required="" disabled> </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Under Medication<br>(yes/no):
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input autocomplete="off" class="form-control" id="id_under_medication" value = " {{ StudentDetailsForm.under_medication  }} " name="under_medication" type="text" required="" disabled>  </div>
+                                            </div></div>
+                                            
+                                            <div class="row" style="margin-top: 17px;">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Allergic for anything:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input autocomplete="off" class="form-control" id="id_allergic" value = " {{ StudentDetailsForm.allergic }}" name="allergic" type="text" required="" disabled> </div>
+                                            </div>
+                                            </div>
+                                             </div>
+         </div>
+         <div class="tab-pane active" id="portlet_tab3">
+           <div class="form-body">   
+                                             <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Section:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                 <select autocomplete="off" class="form-control" id="id_class_name" name="class_name" required="" disabled>
+                           <option style="display:none" selected="selected" value="{{ StudentDetailsForm.section.id }}"> {{ StudentDetailsForm.section }}</option>
+                           {% for Sections in Sections %}
+                           <option value="{{ Sections.id }}" {{ value1 }} >{{ Sections.section }}</option>
+                           {% endfor %}
+                        </select>
+                                                
+                                                
+                                                
+                                                    </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Joining Date:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                
+                                                 <input autocomplete="off" value="{{ StudentDetailsForm.joining_date }}"  class="form-control" id="id_joining_date" name="joining_date" type="date" disabled>  
+                                                     </div>
+                                            </div></div>
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Academic Year:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                 <select autocomplete="off" class="form-control" id="id_class_name" name="class_name" required="" disabled>
+                           <option style="display:none" selected="selected" value="{{ StudentDetailsForm.academic_year.id }}">  {{ StudentDetailsForm.academic_year }}</option>
+                           {% for AcademicYear in AcademicYear %}
+                           <option value="{{ AcademicYear.id }}" {{ value1 }} >{{ AcademicYear.academic_year }}</option>
+                           {% endfor %}
+                        </select>
+                                                
+                                                
+                                                     </div>
+                                            </div>
+                                            </div>
+                                         
+                                             </div>
+                                             
+         </div>
+      </div>
+   </div>
+</div>
+<div id="myModal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <form action="{% url 'Registration:saveStudentSubject' %}" method="post"
+         id="save">
+         {% csrf_token %}
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">Select Subject</h4>
+            </div>
+            <div class="modal-body">
+               <input type="hidden" value= "{{ StudentDetailsForm.id }}" name ="student_id1"/>
+               <input type="hidden" value= "{{ StudentDetailsForm.class_name.id }}" name ="class_id"/>
+               <table class="sub table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_1" role="grid" aria-describedby="sample_1_info">
+              <thead>
+                                            <tr role="row">
+                                           <th class="sorting_asc" tabindex="0" aria-controls="sample_1" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Classname : activate to sort column descending" style="width: 145px;"> </th>
+                                              <th class="sorting_asc" tabindex="0" aria-controls="sample_1" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Classname : activate to sort column descending" style="width: 145px;">Code </th>
+                                            <th class="sorting" tabindex="0" aria-controls="sample_1" rowspan="1" colspan="1" aria-label=" Actions : activate to sort column ascending" style="width: 114px;"> Subject Name </th>
+                                           </tr>
+                                        </thead>
+              
+               </table>
+            </div>
+            <div class="modal-footer">
+               <button type="submit" class="btn green">Save</button>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </form>
+   </div>
+</div>
+
+<div id="myModal1" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <form action="{% url 'Registration:delete_student' %}" method="post" id="save">
+      
+         {% csrf_token %}
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">Are you sure you want to delete it???</h4>
+               <input type="hidden" value= "{{ StudentDetailsForm.id }}" name ="studentId"/>
+                <input type="hidden" value= "{{ ParentsDetails.id }}" name ="parentid"/>        
+                                    
+            </div>
+            <div class="modal-body">
+              
+              
+            </div>
+            <div class="modal-footer">
+               <button type="submit" class="btn green">Yes</button>
+               <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+         </div>
+      </form>
+   </div>
+</div>
+
+{% endblock %}              
+<!-- BEGIN CORE PLUGINS -->

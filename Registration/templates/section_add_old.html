@@ -1,0 +1,103 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+      {%block ScriptBlock%}   
+  <Script>
+  
+
+  </Script>
+      
+{%endblock%}    
+        
+{% block content %}
+        
+         <div class="page-bar" style="margin-bottom: 1px;">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                <a href="{% url 'Registration:home' %}">Home</a> 
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                
+                                <a href="{% url 'Registration:academic_school_view' %}"> Academic & School</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                             <li>
+                                
+                                <a href="{% url 'Registration:section_details' %}"> View Section</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                <span>Add Section</span>
+                            </li>
+                        </ul>
+                        
+                    </div>  
+        
+
+                            <!-- BEGIN VALIDATION STATES-->
+                            <div class="portlet light portlet-fit portlet-form ">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Section Details</span>
+                                    </div>
+                                    
+                                </div>
+                                <div class="portlet-body">
+                                
+                                
+                                    <!-- BEGIN FORM-->
+                                    <form action="{% url 'Registration:save_section' %}" id="form_sample_1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                    
+                                
+                    {% csrf_token %}
+                                   
+                                        <div class="form-body">
+                                            
+                                            <div class="row">
+                                                <div class="">
+                                                    <label class="col-md-2 control-label">Section:
+                                                       
+                                                    </label>
+                                                        <div class="col-md-4">
+                                                                {{ sectiondetails1.section }} 
+                                                        </div>
+                                                </div>
+
+                                                <div class="">
+                                                    <label class="col-md-2 control-label">Section Code:
+                                                        
+                                                    </label>
+                                                    <div class="col-md-4">
+                                                    {{ sectiondetails1.section_code }}
+                                                         </div>
+                                                </div>
+
+                                            </div>
+                                            <br><br>
+                                         
+                                           
+                                        </div>
+                                            <br>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green">Save</button>
+                                                    <a href="{% url 'Registration:section_details' %}">
+                                                    <button type="button" class="btn grey-salsa btn-outline">Cancel</button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- END FORM-->
+                                </div>
+                            </div>
+                            <!-- END VALIDATION STATES-->
+                        
+                       
+           {% endblock %}              
+                        
+                        <!-- BEGIN CORE PLUGINS -->
+       

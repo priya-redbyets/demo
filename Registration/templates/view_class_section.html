@@ -1,0 +1,254 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{%block styleBlock%}
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+      
+        <link href="{% static 'assets/global/plugins/datatables/datatables.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css' %}" rel="stylesheet" type="text/css" />
+        
+       
+         </head>
+    <!-- END HEAD -->
+ 
+    {%endblock%}
+
+      {%block ScriptBlock%}   
+ <script>
+window.onload = function() {
+      //YOUR JQUERY CODE
+    $(document).ready(function() {
+        console.log("hiiii")
+        $("#id_class_name").change(function() {
+        class_name = document.getElementById("id_class_name").value
+        
+            var url = '/school/viewSectionDetail/';
+        viewSectionDetail(url,class_name)               
+                
+            
+        });
+        
+        
+        $("#filter").click(function() {
+              console.log("in filter")
+                var url = '/school/viewFilteredStudent/';
+              class_name = document.getElementById("id_class_name").value
+              section_name = document.getElementById("id_section_name").value
+                religion = document.getElementById("id_religion").value
+                
+                    console.log(class_name)
+                    console.log("section_name",section_name)
+                    console.log("religion",religion)
+                    
+                console.log(class_name)
+                viewFilteredStudent(url,class_name,section_name,religion)               
+                    
+                
+            });
+         $('#id_subject_name').multiSelect({
+              afterSelect: function(values){
+                //alert("Select value: "+values);
+              },
+              afterDeselect: function(values){
+                //alert("Deselect value: "+values);
+              }
+            }); 
+        
+
+        
+         $('#id_student_name').multiSelect({
+              afterSelect: function(values){
+                //alert("Select value: "+values);
+              },
+              afterDeselect: function(values){
+                //alert("Deselect value: "+values);
+              }
+            }); 
+        
+    });
+    
+      
+      
+function viewFilteredStudent(url,class_name,section_name,religion)   {
+        
+        $.ajax({
+            url : url,
+            type : "GET",
+            data : {
+                class_name : class_name,
+                section_name : section_name,
+                religion : religion
+            },
+            
+        })
+
+        .done(
+                function(data) {
+                    console.log(data[0]);
+                    $('#ms-id_student_name .ms-selectable .ms-list li').each(function(i){
+                        value2 = $(this).text();
+                        $(this).hide();
+                        
+                        for (var i = 0; i < data.length; i++) {
+                            
+                            
+                            if (data[i] == value2)
+                                
+                                {
+                                
+                                if($(this).text(value2)){
+                                    $(this).show();
+                                }
+                                
+                                
+                                }
+                            
+                        }
+
+                       
+                    });
+                    
+                        
+
+                });
+      
+    
+    }
+    function viewSectionDetail(url ,class_name) {
+        
+        $.ajax({
+            url : url,
+            type : "GET",
+            data : {
+                class_name : class_name
+            },
+        })
+
+        .done(
+                function(data) {
+                    console.log(data);
+                    
+                     $('#id_section_name').empty();
+                        $('#id_section_name').append(
+                                '<option value="">Please select</option>');
+                        
+                        for (var i = 0; i < data.length; i++)
+
+                        {
+
+                            /* console.log(data[i].apartment_flat_no) */
+                            /* $('#id_apartment_flat_no').empty(); */
+
+                            $('#id_section_name').append(
+                                    '<option value="'+data[i].id+'">'
+                                            + data[i].section + '</option>')
+
+                            /* $('#id_apartment_flat_no1-'+(i)+'-apartment_flat_no').val(data[i].apartment_flat_no);
+                             */
+                        }
+                        
+                        
+
+                });
+      
+    
+    }
+}
+</script>
+      
+{%endblock%}    
+        
+{% block content %}
+        
+         <div class="page-bar" style="margin-bottom: 1px;">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                 <a href="{% url 'Registration:home' %}">Home</a> 
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                             <li>
+                                
+                                 <a href="{% url 'Registration:profile_view' %}"> Parents & Students</a>   
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                
+                                <span>Medical Management</span>
+                                
+                            </li>
+                           
+                        </ul>
+                        
+        </div>  
+        
+
+                            <!-- BEGIN VALIDATION STATES-->
+                            <div class="portlet light portlet-fit portlet-form ">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Medical Details</span>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="portlet-body">
+                                
+                                
+                                    <!-- BEGIN FORM-->
+                                    <form action="{% url 'Registration:view_student_medical_list' %}" id="form_sample_1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                    
+                                
+                    {% csrf_token %}
+                                   
+                                        <div class="form-body">
+                                           
+        
+                                            <div class="row">
+                                            
+                                                
+                                                <div class="col-md-3">
+                                                <h4> Select Class  </h4>
+
+                                                   
+                                                    <div>
+                                                    
+                                                    {{ view_class_section.class_name }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                <h4>Select Section  </h4>
+                                                   
+                                                    <div>
+                                                    {{ view_class_section.section_name }}
+                                                    </div>
+                                                </div>
+
+                    
+                                                <div class="col-md-3">
+                                                <button type="submit" class="btn blue btn-block" style="margin-top:38px;">Go</button>
+                                                </div>
+                                             </div>                                            
+
+                                            </div>
+                                            
+                                            
+                                            <br><br>
+                                            
+                                        </div>
+                                      
+                                         </form>
+                                       
+                                    
+                                    <!-- END FORM-->
+                                </div>
+                            </div>
+                            <!-- END VALIDATION STATES-->
+                        
+                       
+           {% endblock %}              
+                        
+                        <!-- BEGIN CORE PLUGINS -->
+       

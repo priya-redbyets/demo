@@ -1,0 +1,543 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+       
+  
+         {%block styleBlock%}
+      <style type="text/css">  
+        .row {
+    margin-left: 80px;
+    margin-right: 20px;
+    margin-top: 0px;
+}
+li
+{ 
+display:inline; 
+
+} 
+input[type=file]{ 
+        color:transparent;
+    }
+#PreviewPicture
+{
+ background-image: url("/../static/images/user.png");
+ width: 150px;
+    height: 150px;
+    background-repeat: no-repeat;
+
+}
+
+
+.portlet.box.blue>.portlet-title, .portlet>.portlet-body.blue {
+    background-color: #eef1f5;
+}
+
+.portlet.box.blue {
+    border: 1px solid #eef1f5;
+    border-top: 0;
+}
+
+.portlet>.portlet-title>.nav-tabs {
+    background: 0 0;
+    margin: 1px 0 0;
+    float: left;
+    display: inline-block;
+    border: 0;
+}
+
+
+.portlet>.portlet-title>.nav-tabs>li>a {
+    background: 0 0;
+    margin: 5px 0 0 1px;
+    border: 0;
+    padding: 8px 10px;
+    color: #17C4BB;
+}
+#id_gender{
+    list-style: none;
+}
+      </style> 
+        {%endblock%}
+        
+         {%block ScriptBlock%}
+<script>
+window.onload = function() {
+      //YOUR JQUERY CODE
+    $(document).ready(function() {
+        console.log("hiiii")
+        $('.viewOnlyAccess').prop("disabled", true);
+        $("#id_parent_name").change(function() {
+                    
+            parent_name = document.getElementById("id_parent_name").value
+            
+            console.log(parent_name)
+            var url = '/school/viewParentEmail/';
+        viewParentEmail(url,parent_name)                
+                    
+                });
+
+    
+        
+                            
+              $("#id_photo").on("change", function(){
+               var files = !!this.files ? this.files : [];
+               if (!files.length || !window.FileReader) return; // Check if File is selected, or no FileReader support
+               if (/^image/.test( files[0].type)){ //  Allow only image upload
+                var ReaderObj = new FileReader(); // Create instance of the FileReader
+                ReaderObj.readAsDataURL(files[0]); // read the file uploaded
+                ReaderObj.onloadend = function(){ // set uploaded image data as background of div
+                $("#PreviewPicture").css("background-image", "url("+this.result+")");
+               }
+              }else{
+                alert("Upload an image");
+              }
+             });
+            });
+
+       
+             $("#id_class_name").change(function() {
+        class_name = document.getElementById("id_class_name").value
+        
+            var url = '/school/ViewSectionDetailStudent/';
+        ViewSectionDetailStudent(url,class_name)                
+                
+            
+        });
+  
+      
+    }
+
+function viewParentEmail(url ,parent_name)
+{
+    
+    $.ajax({
+        url : url,
+        type : "GET",
+        data : {
+            parent_name : parent_name
+        },
+    })
+
+    .done(
+            function(data) {
+                console.log(data);
+                
+                $('#id_parent_mail').val(data[0].emai_id);
+                    
+                    
+
+            });
+}
+
+
+
+
+
+
+
+function ViewSectionDetailStudent(url ,class_name) 
+{
+    
+    $.ajax({
+        url : url,
+        type : "GET",
+        data :
+        {
+            class_name : class_name
+        },
+    })
+
+    .done(
+            function(data)
+            {
+                console.log(data);
+                
+                 $('#id_section').empty();
+                    $('#id_section').append(
+                            '<option value="">Please select</option>');
+                    
+                    for (var i = 0; i < data.length; i++)
+
+                    {
+
+                        /* console.log(data[i].apartment_flat_no) */
+                        /* $('#id_apartment_flat_no').empty(); */
+
+                        $('#id_section').append(
+                                '<option value="'+data[i].id+'">'
+                                        + data[i].section + '</option>')
+
+                        /* $('#id_apartment_flat_no1-'+(i)+'-apartment_flat_no').val(data[i].apartment_flat_no);
+                         */
+                    }
+                    
+                    
+
+            });
+  
+
+}
+
+
+
+
+
+
+</script>
+        
+ {%endblock%}       
+        
+        
+        {% block content %}
+                    <div class="page-bar" style="margin-bottom: 1px;">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                <a href="{% url 'Registration:home' %}">Home</a> 
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                
+                                <a href="{% url 'Registration:profile_view' %}"> Parents & Students </a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+
+                           
+                            <li>
+
+                                <span>Add Student</span>
+                            </li>
+                        </ul>
+                        
+                    </div>       
+
+                            <!-- BEGIN VALIDATION STATES-->
+                            <div class="portlet light portlet-fit portlet-form ">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Student Details</span>
+                                    </div>
+                                   
+                                </div>
+                                <div class="portlet-body">
+                                
+                                
+                                    <!-- BEGIN FORM-->
+                                    <form action="{% url 'Registration:save_student' %}" id="form_sample_1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                    
+                                
+                    {% csrf_token %}
+                                   
+                                        <div class="form-body">
+                                            <div  height="142" width="142" id="PreviewPicture"></div>
+                                           {{ StudentDetailsForm.photo }}
+                                              {{ StudentDetailsForm.id }}
+                                            
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">First Name:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.first_name }} </div>
+                                            </div>
+                                            
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Last Name:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.last_name }} </div>
+                                            </div>
+                                            </div>
+                                            <br>
+                                         
+                                            <div class="row">
+                                            
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Father Name:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.father_name  }}  </div>
+                                            </div>
+                                             <div class="">
+                                                <label class="col-md-2 control-label">Mother Name:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.mother_name }}  </div>
+                                            </div>
+                                            
+                                            </div>
+                                            <br>
+                                             
+                                            <div class="row">
+                                           
+                                            
+                                            
+                                           
+                                            <div class="">
+                                            
+                                            
+                                            
+                                                <label class="col-md-2 control-label">Email :
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.email }}  </div>
+                                            </div>
+                                             
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Gender:
+                                                    
+                                                </label>
+                                                <div class="col-md-4" style="margin-left:-39px;margin-top: 3px;">
+                                                    {{ StudentDetailsForm.gender }}  </div>
+                                            </div>
+                                            
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                           
+                                            
+                                           
+                                            <div class="">
+                                            
+                                            
+                                            
+                                                <label class="col-md-2 control-label">Birth Date:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.birth_date }}  </div>
+                                            </div>
+                                             <div class="">
+                                                <label class="col-md-2 control-label">Enrollment Number:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.student_enrollment_num }} </div>
+                                            </div>
+                                            </div>
+                                            <br>
+                                         
+                                            <div class="row" >
+                                           
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Class Name:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                
+                                               {{ StudentDetailsForm.class_name  }}
+         
+         
+                                                      </div>
+                                            </div>
+                                             <div class="" >
+                                            
+                                            <label class="col-md-2 control-label">Parent Name:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.parent_name }} </div>
+                                                
+                                            </div>
+                                            </div>
+                                            <br>
+                                            
+                                            <div class="row">
+                                           
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Parent Email:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                
+                                               {{ StudentDetailsForm.parent_mail  }}
+         
+         
+                                                      </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">School Name:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.school_name }}
+                                                    
+                                                     </div>
+                                            </div>
+                                            </div>
+                                            <br>
+                                            
+                                            <div class="row">
+                                           
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Nationality:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                
+                                               {{ StudentDetailsForm.nationality  }}
+         
+         
+                                                      </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Religion:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.religion }}
+                                                    
+                                                     </div>
+                                            </div>
+                                            </div>
+                                            
+                                            <br>
+                                            <div class="row" style="margin-top: 2px;">
+                                            
+                                            <div class="">
+                                            
+                                            
+                                            <label class="col-md-2 control-label">Residential Address:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.adress  }}  </div>
+                                                
+                                            </div></div>
+                                            <br>
+                                            
+                                            
+                                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    
+                                    <ul class="nav nav-tabs">
+                                        <li class="active">
+                                            <a href="#portlet_tab3" data-toggle="tab" aria-expanded="true"> Academic Details </a>
+                                        </li>
+                                        <!--
+                                        <li class="">
+                                            <a href="#portlet_tab2" data-toggle="tab" aria-expanded="false"> Medical Information </a>
+                                        </li>-->
+                                       
+                                    </ul>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="tab-content">
+                                        <!--
+                                        <div class="tab-pane" id="portlet_tab2">
+                                           <div class="form-body">   
+                                             <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Blood Group:
+                                                   
+                                                </label>
+                                                <div class="col-md-4" id="medical">
+                                                    {{ StudentDetailsForm.blood_group }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Height(cm.):
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.height  }}  </div>
+                                            </div></div>
+                                            <br>
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Weight(kg.):
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.weight }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Under<br> Medication(yes/no):
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.under_medication  }}  </div>
+                                            </div></div>
+                                            <br>
+                                            
+                                            <div class="row" style="margin-top: 17px;">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Allergic for anything:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.allergic }} </div>
+                                            </div>
+                                            </div>
+                                             </div>
+                                        </div>
+                                        -->
+
+
+                                        <div class="tab-pane active" id="portlet_tab3">
+                                             
+                                           <div class="form-body">   
+                                             <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Section:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.section }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Joining Date:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.joining_date  }}  </div>
+                                            </div></div>
+                                            <br>
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Academic Year:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ StudentDetailsForm.academic_year }} </div>
+                                            </div>
+                                            </div>
+                                         
+                                             </div>
+                                             
+                                             
+                                             
+                                             
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green">Save</button>
+                                                    
+                                                    <a href="{% url 'Registration:student_details' %}">
+                                                        
+                                                   
+                                                    <button type="button" class="btn grey-salsa btn-outline">Cancel</button>
+                                                    
+                                                     </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- END FORM-->
+                                </div>
+                            </div>
+                            <!-- END VALIDATION STATES-->
+                    
+           {% endblock %}              
+                        
+                        <!-- BEGIN CORE PLUGINS -->
+       

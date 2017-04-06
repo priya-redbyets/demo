@@ -1,0 +1,154 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+       
+  
+         {%block styleBlock%}
+      <style type="text/css">  
+        .row {
+    margin-left: 80px;
+    margin-right: 20px;
+    margin-top: 30px;
+}
+input[type=file]{ 
+        color:transparent;
+    }
+#PreviewPicture
+{
+ background-image: url("/../static/images/user.png");
+ width: 150px;
+    height: 150px;
+    background-repeat: no-repeat;
+
+}
+      </style> 
+        {%endblock%}
+        
+         {%block ScriptBlock%}
+<script>
+window.onload = function() {
+	  //YOUR JQUERY CODE
+	$(document).ready(function() {
+		console.log("hiiii")
+		
+		$(function() {
+			  $("#id_logo").on("change", function(){
+			   var files = !!this.files ? this.files : [];
+			   if (!files.length || !window.FileReader) return; // Check if File is selected, or no FileReader support
+			   if (/^image/.test( files[0].type)){ //  Allow only image upload
+			    var ReaderObj = new FileReader(); // Create instance of the FileReader
+			    ReaderObj.readAsDataURL(files[0]); // read the file uploaded
+			    ReaderObj.onloadend = function(){ // set uploaded image data as background of div
+			    $("#PreviewPicture").css("background-image", "url("+this.result+")");
+			   }
+			  }else{
+			    alert("Upload an image");
+			  }
+			 });
+			});
+
+	});
+
+	  
+	}
+
+
+</script>
+        
+ {%endblock%}       
+        
+        
+        {% block content %}
+        
+<div class="col-md-12">
+                            <!-- BEGIN VALIDATION STATES-->
+                            <div class="portlet light portlet-fit portlet-form ">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">School Details</span>
+                                    </div>
+                                    
+                                </div>
+                                <div class="portlet-body">
+                                
+                                
+                                    <!-- BEGIN FORM-->
+                                    <form action="{% url 'Registration:save_school' %}" id="form_sample_1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                    
+                                
+					{% csrf_token %}
+                                   
+                                        <div class="form-body">
+                                            <div  height="142" width="142" id="PreviewPicture"></div>
+                                           {{ SchoolDetails.logo }}
+                                             
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">School Name:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ SchoolDetails.school_name }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Email:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ SchoolDetails.email  }}  </div>
+                                            </div></div>
+                                            
+                                         
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Website:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ SchoolDetails.website }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Contact Number:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ SchoolDetails.contact_num  }}  </div>
+                                            </div></div>
+                                             
+                                            <div class="row">
+                                           
+                                            
+                                            
+                                            <div class="">
+                                                <label class="col-md-2 control-label">School Address:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ SchoolDetails.school_address }}  </div>
+                                            </div>
+                                           </div>
+                                            
+                                           
+                                            
+                                            
+                                           
+                                            <br>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green">Save</button>
+                                                    <button type="button" class="btn grey-salsa btn-outline">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- END FORM-->
+                                </div>
+                            </div>
+                            <!-- END VALIDATION STATES-->
+                        </div>
+                       
+           {% endblock %}              
+                        
+                        <!-- BEGIN CORE PLUGINS -->
+       

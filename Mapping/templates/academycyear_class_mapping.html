@@ -1,0 +1,330 @@
+{% extends "index.html" %}
+
+<html lang="">
+
+    
+         {%block styleBlock%}
+     <style>
+     table ,tr td{
+    border:1px solid red
+}
+tbody {
+    display:block;
+    height:184px;
+    overflow:auto;
+}
+thead, tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;/* even columns width , fix width of table too*/
+}
+thead {
+    width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
+}
+table {
+    width:400px;
+}
+     </style>
+        {%endblock%}
+ {%block ScriptBlock%}
+<script>
+window.onload = function() {
+	  //YOUR JQUERY CODE
+	$(document).ready(function() {
+		console.log("hiiii")
+		
+       $("#go").click(function(event){
+        $("#tab1").show();
+        $('.form-control').prop("disabled", false);
+        
+       });
+		$("#id_academic_year").change(function(event){
+			
+	        
+		});  
+		
+		
+		$("#id_academic_year").change(function() {
+			
+			
+			 $("#academic").show();
+		       
+					console.log("in acedemic year ajax")
+					academic_year = document.getElementById("id_academic_year").value
+					console.log(academic_year)		
+							
+					var url = '/school/viewMultisectClassList/';
+					viewMultisectClassList(url,academic_year)
+					
+					var url1 = '/school/viewMultiSectionList/';
+					viewMultiSectionList(url1,academic_year)
+				});
+
+		$('#id_section_id').multiSelect({
+		      afterSelect: function(values){
+		        //alert("Select value: "+values);
+		      },
+		      afterDeselect: function(values){
+		        //alert("Deselect value: "+values);
+		      }
+		    }); 
+	});
+	 
+	
+	 function viewMultisectClassList(url , academic_year) {
+		 
+		 
+	      
+			$.ajax({
+				url : url,
+				type : "GET",
+				data : {
+					academic_year : academic_year
+				},
+			})
+
+			.done(
+					function(data) {
+						console.log(data)
+						$('.class').empty();
+						$('#ms-id_class_id .ms-selectable .ms-list li').show();
+						$('.ms-list li').each(function(i){
+						    value2 = $(this).text();
+						    
+						    for (var i = 0; i < data.length; i++) {
+								
+								
+						    	if (data[i].class_name == value2)
+						    		
+						    		{
+						    		
+						    		if($(this).text(value2)){
+						    			$(this).hide();
+						    		}
+						    		
+						    		
+						    		}
+								
+							}
+
+						   
+						});
+						
+						for (var i = 0; i < data.length; i++) {
+							
+							
+							$(".class").append('<tr><td>' +  data[i].class_name + '</td></tr>');	
+							
+						}
+						
+
+					});
+		}
+
+	 
+	 
+	 function viewMultiSectionList(url1 , academic_year) {
+		 
+		 
+	      
+			$.ajax({
+				url : url1,
+				type : "GET",
+				data : {
+					academic_year : academic_year
+				},
+			})
+
+			.done(
+					function(data) {
+						console.log(data)
+						$('.section').empty();
+						$('#ms-id_section_id .ms-selectable .ms-list li').show();
+						$('.ms-list li').each(function(i){
+						    value2 = $(this).text();
+						    
+						    for (var i = 0; i < data.length; i++) {
+								
+								
+						    	if (data[i].section == value2)
+						    		
+						    		{
+						    		
+						    		if($(this).text(value2)){
+						    			$(this).hide();
+						    		}
+						    		
+						    		
+						    		}
+								
+							}
+
+						   
+						});
+						
+						for (var i = 0; i < data.length; i++) {
+							
+							
+							$(".section").append('<tr><td>' +  data[i].section + '</td></tr>');	
+							
+						}
+
+
+					});
+		}
+
+	  
+}
+</script>
+{%endblock%}  
+{% block content %}
+<body>
+ 
+
+
+<div class="page-bar" style="margin-bottom: 1px;">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                <a href="{% url 'Registration:home' %}">Home</a> 
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                
+                                <a href="{% url 'Registration:academic_school_view' %}">   Academic & School</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            
+                            <li>
+                                <span>Academic Year/Class Mapping</span>
+                            </li>
+                        </ul>
+                        
+                    </div> 
+
+
+    <div class="portlet light portlet-fit portlet-form ">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Academic Year & Class Mapping</span>
+                                    </div>
+                                   
+                                </div>
+                                <div class="portlet-body">
+                                
+                                
+                                    <!-- BEGIN FORM-->
+                                     
+                                        <div class="form-body">
+                                            
+                                            <div class="row">
+                                            <div class="page-bar">
+                                          
+                                                <label class="col-md-2 control-label" style="width: 130px; margin-left:220px">Academic Year:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                               
+                                                   {{ AcademicyearClassRelationForm.academic_year }} </div>
+                                          <form  method="post" action="{% url 'Mapping:viewmappedAcademicClass' %}">   
+                                          {% csrf_token %}      
+                                          <button type="submit"  id="mapping" class="btn blue btn-block" style="margin-left: 50%; margin-right: 50%; width: 8%;"> 
+                                          Go</button> 
+                                          </form>       
+                                         
+                               
+                                       
+
+                                                
+                                                   
+                                            </div>
+                                            
+                                           </div>
+                                                                                       
+                                            
+                                          <div class="col-md-6" style="margin-top: 5%;">
+                                          <b>Class:</b>
+                                                   
+                                                
+                                            <div class="row " id="academic"  style=" margin-top: 4%;">                                       
+                                              {{ AcademicyearClassRelationForm.class_id }}
+                                              
+                                          
+                                            </div>
+                                            
+                                            </div>
+                                            <div class="col-md-6" style="margin-top: 5%;">
+                                           <b> Section:</b>
+                                            <div class="row " id="academic"  style=" margin-top: 4%;">                                       
+                                              {{ AcademicyearClassRelationForm.section_id }}
+                                              
+                                            </div>
+                                            
+                                            </div>
+                                            
+                                            <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-3 col-md-9 center-block">
+                                                    
+                                               <br>
+												 <form  method="post" action="{% url 'Mapping:academicyearClassMapping' %}">
+				{% csrf_token %}
+                                                <button type="submit"  id="mapping" class="btn blue btn-block" style="margin-left: 50%; margin-right: 50%; width: 30%;">
+                                               Mapping </button>
+                                         
+
+			</form>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                            
+                                            <div class="col-md-6" style="margin-top: 5%;">
+                            
+                        </div>
+                                            
+                                 </div>     
+                               
+                                </div>
+                                
+                            </div>
+                                    
+                                    <!-- END FORM-->
+                                
+                                </html>
+ 
+  					<div class="form-body">   
+                                           
+                 <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1">
+               <thead>
+                  <tr>
+                     <th>  Academic Year </th>
+                      <th> Class </th>
+                       <th> Section </th>
+                      
+                  </tr>
+               </thead>
+               <tbody>
+                  
+                  <tr class="odd gradeX">
+                  
+                     <td>{{ AcademicyearClassRel.academic_year }}</td>
+                     {% for obj in ClassDetailsForm  %}
+                     <td>{{ obj.class_name }}</td>
+                      {% endfor %}
+                      
+                   {% for obj in SectionDetailsForm  %}
+                     <td>{{ obj.section }}</td>
+                    
+                     {% endfor %}
+                  </tr>
+               </tbody>
+            </table>                                 
+                                  
+                                         
+              </div>
+                                
+                                {% endblock %}    
+                            

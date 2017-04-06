@@ -1,0 +1,337 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+  {%block ScriptBlock%}   
+  
+   <style type="text/css">  
+        .row {
+    margin-left: 80px;
+    margin-right: 20px;
+    margin-top: 0px;
+}
+input[type=file]{ 
+        color:transparent;
+    }
+    
+    
+    .portlet.box.blue>.portlet-title, .portlet>.portlet-body.blue {
+    background-color: #eef1f5;
+}
+
+.portlet.box.blue {
+    border: 1px solid #eef1f5;
+    border-top: 0;
+}
+
+.portlet>.portlet-title>.nav-tabs {
+    background: 0 0;
+    margin: 1px 0 0;
+    float: left;
+    display: inline-block;
+    border: 0;
+}
+
+
+.portlet>.portlet-title>.nav-tabs>li>a {
+    background: 0 0;
+    margin: 5px 0 0 1px;
+    border: 0;
+    padding: 8px 10px;
+    color: #17C4BB;
+}
+#id_gender{
+    list-style: none;
+}
+
+.form-horizontal .form-group {
+    margin-left: 100px;
+    margin-right: 90px;
+    margin-bottom: -50px;
+    
+}
+
+
+
+
+
+
+</style>   
+  
+ 
+ <script>
+window.onload = function() {
+	  //YOUR JQUERY CODE
+	$(document).ready(function() {
+		$('#action_type').val('add');
+
+		$("#add").click(function() {
+			
+			return addForm(this,'sub_strands');
+		});
+
+		$(".delete").click(function() {
+			
+			return deleteForm(this,'sub_strands');
+		});
+
+	});
+	function addForm(btn, prefix) {
+		console.log(prefix)
+		var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		var row = $(".item:first").clone(true).get(0);
+		/*  $(row).removeAttr('id').insertAfter($('.item')).children('.hidden').removeClass('hidden'); */
+		$(row).removeAttr('id').hide().insertAfter(".item:last").slideDown(300);
+
+		$(row).children().not(':last').find(
+				'input,select,textarea,Date,checkbox').each(function() {
+					updateElementIndex(this, prefix, formCount);
+			if ($(this).attr('type') == 'text')
+				$(this).val('');
+		});
+		$(row).find('.delete').click(function() {
+			deleteForm(this, prefix);
+		});
+		$('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
+		return false;
+	}
+
+	
+
+	
+	function updateElementIndex(el, prefix, ndx) {
+		console.log(prefix);
+		var id_regex = new RegExp('(' + prefix + '-\\d+)');
+		var replacement = prefix + '-' + ndx;
+		if ($(el).attr("for"))
+			$(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+		if (el.id)
+			el.id = el.id.replace(id_regex, replacement);
+		if (el.name)
+			el.name = el.name.replace(id_regex, replacement);
+	}
+
+	
+	
+	
+	function deleteForm(btn, prefix) {
+		var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+		if (formCount > 1) {
+			// Delete the item/form
+			$(btn).parents('.item').remove();
+
+			var forms = $('.item'); // Get all the forms
+
+			// Update the total number of forms (1 less than before)
+			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+
+			var i = 0;
+			// Go through the forms and set their indices, names and IDs
+			for (formCount = forms.length; i < formCount; i++) {
+				$(forms.get(i)).find('input,select,textarea,Date,checkbox')
+						.each(function() {
+							updateElementIndex(this, prefix, i);
+						});
+			}
+		} // End if
+		else {
+			alert("Can't Delete!!!Atleast One Shift will be there!");
+		}
+		return false;
+	}
+	
+	
+	  
+	}
+
+
+</script>
+  
+ 
+
+  {%endblock%}  
+
+
+{% block content %}
+        
+
+     <div class="page-bar" style="margin-bottom: 1px;">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                <a href="{% url 'Registration:home' %}">Home</a> 
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                
+                                <a href="{% url 'Registration:academic_school_view' %}"> Academic & School </a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                             <li>
+                                
+                                <a href="{% url 'Registration:view_subject' %}">  View Subject </a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                <span>Add Subject</span>
+                            </li>
+                        </ul>
+                        
+                    </div> 
+                    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" role="alert" style="color: black;" >{{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+    </div>
+{% endfor %}
+                            <!-- BEGIN VALIDATION STATES-->
+                            <div class="portlet light portlet-fit portlet-form ">
+                                <div class="portlet-title">
+                                   <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Subject Details</span>
+                                    </div>
+                                    
+                                </div>
+                                <div class="portlet-body">
+                                
+                                
+                                    <!-- BEGIN FORM-->
+                                    <form action="{% url 'Registration:save_subject' %}" id="form_sample_1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                    
+                                
+					{% csrf_token %}
+                                   
+                                        <div class="form-body">
+                                            
+                                            
+                                            <div class="row">
+                                            
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Code:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ SubjectDetailsForm.code }} </div>
+                                            </div>
+                           
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Subject Name:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ SubjectDetailsForm.subject }} </div>
+                                            </div>
+                                            
+                          					 
+                                           </div>
+                                           <br><br>
+                                           
+                                            <div class="row">
+                                            
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Type :
+                                                   
+                                                </label>
+                                               <div class="col-md-4">
+												 <select autocomplete="off" class="form-control" id="id_type" name="type" required>
+												<option value="" selected="selected">---------</option>
+												<option value="Mandatory">Mandatory</option>
+												<option value="Optional">Optional</option>
+												</select>  
+											   </div>
+                                           </div>
+                                           
+                                           
+                                 	 
+                                           </div>
+                                           <br><br>
+                                           
+                                    
+                                    <!-- END FORM-->
+                                    
+                                    
+                                     <div class="portlet box blue">
+                                        
+		                                <div class="portlet-title">
+		                                    
+		                                    <ul class="nav nav-tabs">
+		                                        
+		                                        <li class="">
+		                                            <a href="#portlet_tab2" data-toggle="tab" aria-expanded="false">Sub-Strands Details </a>
+		                                        </li>
+		                                       
+		                                    </ul>
+		                                </div>
+                                        
+                                        
+                                     
+                                         <div class="portlet-body">
+                                         	<div class="tab-content">
+                                         	  <div class="tab-pane" id="portlet_tab2">
+                                         	  	
+                                         	  	
+	                                         	 
+	                                        {{ SubjectDetailsFormSets.management_form }} 
+											{% for form in SubjectDetailsFormSets.forms %}
+										
+										
+										<div class="item" id="item">
+												<div class="row" style="margin-left:130px;">
+													
+													
+													
+													<div class="col-6 col-sm-3 form-group" style="width:360px;">
+													
+													<label id="desc">Sub-Strands Name:</label><br>
+													 {{ form.sub_strands }}
+												</div>
+													
+													
+													
+											
+												
+												</div>
+
+												<div style="margin-top:-25px;  margin-right: 1000px;">
+												
+													<input class="delete btn btn-default" id="deletebtn"
+														type="button" value="DELETE" style="margin-left: 9px;">
+														<br>
+														 <input
+														type="button" id="add" value="ADD"
+														class="btn btn-primary"  style="margin-left: 9px;width: 75px;">
+														</div>
+												
+											</div>
+										
+										{% endfor %}
+                                            
+                                        
+	                                         	  	
+	                                         	  	<br><br>
+                                         	  	
+                                         	  </div>
+                                         	  
+                                         	</div>
+                                         
+                                         </div>
+                                     </div>
+                                    
+                                    <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-3 col-md-9" style="margin-left: 40%; margin-right: 50%;">
+                                                    <button type="submit" class="btn green" >Save</button>
+                                                    <button type="button" class="btn grey-salsa btn-outline" >Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    </form>
+                                    
+                                </div>
+                            </div>
+                            <!-- END VALIDATION STATES-->
+                       
+                       
+           {% endblock %}              
+     

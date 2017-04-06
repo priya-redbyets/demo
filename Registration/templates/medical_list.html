@@ -1,0 +1,445 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{%block styleBlock%}
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+      
+        <link href="{% static 'assets/global/plugins/datatables/datatables.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css' %}" rel="stylesheet" type="text/css" />
+        
+       
+         </head>
+    <!-- END HEAD -->
+ 
+    {%endblock%}
+
+      {%block ScriptBlock%}   
+  <script>
+window.onload = function() {
+      //YOUR JQUERY CODE
+    $(document).ready(function() {
+        
+        var i;
+        for (i=1;i<=5;i++)
+        
+        
+         $('#'+[i]) .change(
+                    function() 
+                    {
+                         
+                          
+                        
+                          id = $(this).closest('tr').find('td:eq(0)').html();
+                          console.log(id)
+                           
+                           $('#studentid').val(id);
+                           
+                         
+                    
+                         
+                      
+                    });
+         
+         
+         
+        console.log("hiiii")
+        $("#id_class_name").change(function() {
+        class_name = document.getElementById("id_class_name").value
+        $('#class_name').val(class_name);
+        
+            var url = '/school/viewSectionDetail/';
+        viewSectionDetail(url,class_name)               
+                
+            
+        });
+        
+        $("#id_section_name").change(function() {
+        	section_name = document.getElementById("id_section_name").value
+            $('#section_name').val(section_name);
+            
+                       
+                    
+                
+            });
+       
+        
+        
+        
+        $("#filter").click(function() {
+              console.log("in filter")
+                var url = '/school/viewFilteredStudent/';
+              class_name = document.getElementById("id_class_name").value
+              section_name = document.getElementById("id_section_name").value
+                religion = document.getElementById("id_religion").value
+                
+                    console.log(class_name)
+                    console.log("section_name",section_name)
+                    console.log("religion",religion)
+                    
+                console.log(class_name)
+                viewFilteredStudent(url,class_name,section_name,religion)               
+                    
+                
+            });
+         $('#id_subject_name').multiSelect({
+              afterSelect: function(values){
+                //alert("Select value: "+values);
+              },
+              afterDeselect: function(values){
+                //alert("Deselect value: "+values);
+              }
+            }); 
+        
+
+        
+         $('#id_student_name').multiSelect({
+              afterSelect: function(values){
+                //alert("Select value: "+values);
+              },
+              afterDeselect: function(values){
+                //alert("Deselect value: "+values);
+              }
+            }); 
+        
+    });
+    
+      
+
+      
+      
+function viewFilteredStudent(url,class_name,section_name,religion)   {
+        
+        $.ajax({
+            url : url,
+            type : "GET",
+            data : {
+                class_name : class_name,
+                section_name : section_name,
+                religion : religion
+            },
+            
+        })
+
+        .done(
+                function(data) {
+                    console.log(data[0]);
+                    $('#ms-id_student_name .ms-selectable .ms-list li').each(function(i){
+                        value2 = $(this).text();
+                        $(this).hide();
+                        
+                        for (var i = 0; i < data.length; i++) {
+                            
+                            
+                            if (data[i] == value2)
+                                
+                                {
+                                
+                                if($(this).text(value2)){
+                                    $(this).show();
+                                }
+                                
+                                
+                                }
+                            
+                        }
+
+                       
+                    });
+                    
+                        
+
+                });
+      
+    
+    }
+    function viewSectionDetail(url ,class_name) {
+        
+        $.ajax({
+            url : url,
+            type : "GET",
+            data : {
+                class_name : class_name
+            },
+        })
+
+        .done(
+                function(data) {
+                    console.log(data);
+                    
+                     $('#id_section_name').empty();
+                        $('#id_section_name').append(
+                                '<option value="">Please select</option>');
+                        
+                        for (var i = 0; i < data.length; i++)
+
+                        {
+
+                            /* console.log(data[i].apartment_flat_no) */
+                            /* $('#id_apartment_flat_no').empty(); */
+
+                            $('#id_section_name').append(
+                                    '<option value="'+data[i].id+'">'
+                                            + data[i].section + '</option>')
+
+                            /* $('#id_apartment_flat_no1-'+(i)+'-apartment_flat_no').val(data[i].apartment_flat_no);
+                             */
+                        }
+                        
+                        
+
+                });
+      
+    
+    }
+}
+</script>
+{%endblock%}    
+        
+{% block content %}
+        
+        <div class="page-bar" style="margin-bottom: 1px;">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                 <a href="{% url 'Registration:home' %}">Home</a> 
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                             <li>
+                                
+                                 <a href="{% url 'Registration:profile_view' %}"> Parents & Students</a>   
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                
+                                <span>Medical Management</span>
+                                
+                            </li>
+                           
+                        </ul>
+                        
+        </div>  
+        
+
+                            <!-- BEGIN VALIDATION STATES-->
+                            <div class="portlet light portlet-fit portlet-form ">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Medical Details</span>
+                                        
+                                        
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="portlet-body">
+                                
+                                
+                                    <!-- BEGIN FORM-->
+                                    
+                                   
+                                        <div class="form-body">
+                                           
+        
+                                            <div class="row">
+                                            
+                                            <form action="{% url 'Registration:view_student_medical_list' %}" id="form_sample_1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                    
+                                
+                    {% csrf_token %}
+                                            
+                                                
+                                                 <div class="col-md-3">
+                                                
+                                                <h4>Select Class</h4>
+
+                                                   
+                                                    <div>
+                                                    
+                                                    {{ ViewClassSection1.class_name }}
+                                                    </div>
+                                                </div>
+                                                
+                                                
+                                                
+
+                                                <div class="col-md-3">
+                                                <h4>Select Section  </h4>
+                                                   
+                                                    <div>
+                                                    {{ ViewClassSection1.section_name }}
+                                                    </div>
+                                                </div>
+
+                                               
+                                                
+                                                   <div class="col-md-2">
+                                                <button type="submit" class="btn blue btn-block"  style="margin-top: 38px;">Go</button>
+                                                 
+                                                </div>
+                                                </form>
+                                                   <form action="{% url 'Registration:exportMedicalInfo' %}" id="form_sample_1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                                 {% csrf_token %}
+                                                
+                                                 <div class="col-md-2">
+                                                  <input id="class_name" name="class_name" type="hidden" value="">
+                                                   <input  id="section_name" name="section_name" type="hidden" value="">
+                                                 
+                                                <button type="submit" class="btn blue btn-block" id ="export" style="margin-top: 38px;">Export</button>
+                                                 
+                                                </div>
+                                                  </form>
+                                                  
+                                                  
+                                                 <div class="col-md-2">
+                                                <button type="button" class="btn blue btn-block" data-toggle="modal" style="margin-top: 38px;" data-target="#myModal">Import</button>
+                                                </div>
+                                                
+                                               
+                                                
+                                                
+                                             </div>                                            
+
+                                            </div>
+                                            
+                      
+                                            <br><br>
+                       <form action="{% url 'Registration:save_medical_student' %}" id="form_sample_1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                             {% csrf_token %}
+                                           <input class="form-control" id="studentid" name="studentid" type="hidden" value="">
+                                           <input class="form-control" id="bloodgrp" name="bloodgrp" type="hidden" value="">
+                                           <input class="form-control" id="height" name="height" type="hidden" value="">
+                                           <input class="form-control" id="weight" name="weight" type="hidden" value="">
+                                           <input class="form-control" id="medication" name="medication" type="hidden" value="">
+                                           <input class="form-control" id="allergic" name="allergic" type="hidden" value="">
+                                          
+                                           
+                                            <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
+                                                    <thead>
+                                                        <tr>
+                                                        
+                                                             <th>Id </th>
+                                                             <th>Name </th>
+                                                             <th> Blood_group </th>
+                                                             <th> Height(cm.) </th>
+                                                             <th> Weight(kg.) </th>
+                                                             <th> Under Medication(yes/no) </th>
+                                                             <th> Allergic for anything </th>
+                                                             <th> Action </th>
+                                                             
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                    
+                                                    
+
+
+                                                          {% for obj in StudentList  %}
+                                                        
+                                                        <tr>
+                                                              
+                                                        
+                                                               <td>{{ obj.id }}</td>
+                              
+                                                             
+                                                             <td>{{ obj.first_name }} {{ obj.last_name }}</td>
+                                                         
+                                                             
+                                                             <td> <input id = bloodgrp{{ forloop.counter }} type="text" name="job_num" value=""></td>
+                                                             
+                                                              <td> <input id = height{{ forloop.counter }} type="text" name="job_num1" value=""></td>
+                                                               <td> <input id = weight{{ forloop.counter }} type="text" name="job_num2" value=""></td>
+                                                                <td>  <input id = medication{{ forloop.counter }} type="text" name="job_num3" value=""></td>
+                                                                <td> <input id = allergic{{ forloop.counter }} type="text" name="job_num1" value=""></td>
+                                                                <td>
+                                                              
+                                                                
+                                                           <button type="submit" class="btn blue btn-block" id={{ forloop.counter }} style="margin-top:0px;">Save</button>
+                                                        </td>
+                                                                
+          
+                                                           {% endfor %}
+                                                           
+                                                              
+                                                           
+                                                           
+                                                            {% for obj1 in MedicalList  %}
+                                                        
+                                                        <tr>
+                                                              
+                                                        
+                                                               <td>{{ obj1.id }}</td>
+                              
+                                                             
+                                                             <td>{{ obj1.student.first_name }} </td>
+                                                         
+                                                             
+                                                             <td> {{ obj1.blood_group }} </td>
+                                                             
+                                                              <td> {{ obj1.height }} </td>
+                                                               <td>{{ obj1.weight }} </td>
+                                                                <td> {{ obj1.under_medication }}</td>
+                                                                  <td> {{ obj1.allergic }}</td>
+                                                                <td>
+                                                              
+                                                                
+                                                           <button type="submit" class="btn blue btn-block" id={{ forloop.counter }} style="margin-top:0px;">Save</button>
+                                                        </td>
+                                                                
+          
+                                                           {% endfor %}
+                                                           
+                                                           
+                                                           
+                                                           
+                                                        </tr>
+
+                                                        </tbody>
+                                                </table>
+                                               
+                                                
+                                                
+                                               </form>
+                                        </div>
+                                      
+                                            
+                                       
+                                    
+                                    <!-- END FORM-->
+                                </div>
+                            </div>
+                            <!-- END VALIDATION STATES-->
+                        <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+     <form action="{% url 'Registration:importMedicalInfo' %}" id="form_sample_1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                                 {% csrf_token %}
+    <div class="modal-content">
+      <div class="modal-header">
+     
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Choose File</h4>
+      </div>
+      <div class="modal-body">
+        {{ MedicalDetailsExcel.excel }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      
+        <button type="submit" class="btn btn-default">Upload</button>
+        
+        
+      
+       
+      </div>
+    </div>
+
+  </div>
+</div>
+    </form>               
+           {% endblock %}              
+                        
+                        <!-- BEGIN CORE PLUGINS -->
+       

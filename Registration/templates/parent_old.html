@@ -1,0 +1,206 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+       
+  
+         {%block styleBlock%}
+      <style type="text/css">  
+        .row {
+    margin-left: 80px;
+    margin-right: 20px;
+    margin-top: 30px;
+}
+input[type=file]{ 
+        color:transparent;
+    }
+    
+    
+    .portlet.box.blue>.portlet-title, .portlet>.portlet-body.blue {
+    background-color: #eef1f5;
+}
+
+.portlet.box.blue {
+    border: 1px solid #eef1f5;
+    border-top: 0;
+}
+
+.portlet>.portlet-title>.nav-tabs {
+    background: 0 0;
+    margin: 1px 0 0;
+    float: left;
+    display: inline-block;
+    border: 0;
+}
+
+
+.portlet>.portlet-title>.nav-tabs>li>a {
+    background: 0 0;
+    margin: 5px 0 0 1px;
+    border: 0;
+    padding: 8px 10px;
+    color: #17C4BB;
+}
+#id_gender{
+    list-style: none;
+}
+      </style> 
+        {%endblock%}
+        
+         {%block ScriptBlock%}
+<script>
+window.onload = function() {
+	  //YOUR JQUERY CODE
+	$(document).ready(function() {
+		
+
+	});
+
+	  
+	}
+
+
+</script>
+        
+ {%endblock%}       
+        
+        
+        {% block content %}
+        
+<div class="col-md-12">
+                            <!-- BEGIN VALIDATION STATES-->
+                            <div class="portlet light portlet-fit portlet-form ">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Parent Details</span>
+                                    </div>
+                                   
+                                </div>
+                                <div class="portlet-body">
+                                
+                                
+                                    <!-- BEGIN FORM-->
+                                    <form action="{% url 'Registration:saveParent' %}" id="form_sample_1" class="form-horizontal" method="POST">
+                                    {% csrf_token %}
+                                
+					
+                                   
+                                        <div class="form-body">
+                                            
+                                             
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label"> Name:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.name }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Contact No:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.contact_num  }}  </div>
+                                            </div></div>
+                                            
+                                            
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label"> Middle Name:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.middle_name }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Last Name:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.last_name  }}  </div>
+                                            </div></div>
+                                            
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Birth Date:
+                                                   
+                                                </label>
+                                                <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.birth_date }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label"> Email:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                {{ ParentsDetailsForm.emai_id }}
+                                                     </div>
+                                            </div>
+                                            
+                                            </div>
+                                            
+                                            <div class="row">
+                                            <div class="">
+                                                <label class="col-md-2 control-label">Gender:
+                                                   
+                                                </label>
+                                                 <div class="col-md-4">
+                                                    {{ ParentsDetailsForm.gender  }} </div>
+                                            </div>
+                                            <div class="">
+                                                <label class="col-md-2 control-label"> Address:
+                                                    
+                                                </label>
+                                                <div class="col-md-4">
+                                                {{ ParentsDetailsForm.adress }}
+                                                     </div>
+                                            </div>
+                                            
+                                            </div>
+                                            
+                                           
+                                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    
+                                    <ul class="nav nav-tabs">
+                                        <li class="">
+                                            <a href="#portlet_tab3" data-toggle="tab" aria-expanded="false"> Student Details </a>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="tab-content">
+                                        
+                                        <div class="tab-pane" id="portlet_tab3">
+                                             
+                                          <p> Please Add Parent First</p>
+                                    </div>
+                                </div>
+                            </div>
+                                           
+                                      </div>      
+                                           
+                                            
+                                            
+                                           
+                                            <br>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn green">Save</button>
+                                                    <button type="button" class="btn grey-salsa btn-outline">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- END FORM-->
+                                </div>
+                            </div>
+                            <!-- END VALIDATION STATES-->
+                        </div>
+                       
+           {% endblock %}              
+                        
+                        <!-- BEGIN CORE PLUGINS -->
+       
