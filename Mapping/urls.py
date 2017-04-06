@@ -9,6 +9,8 @@ app_name = 'Mapping'
 
 print "hello"
 
+print "changes_by_priya"
+
 urlpatterns = [
     ######################  ACADEMIC YEAR & CLASS MAPPING URLS ##############################
     url(r'^classAcedemicyear/$', views.ClassAcedemicyear, name='classAcedemicyear'),
